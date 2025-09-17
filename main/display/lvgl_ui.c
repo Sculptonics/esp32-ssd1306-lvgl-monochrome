@@ -16,7 +16,7 @@
 
 /* INCLUDES ------------------------------------------------------------------*/
 #include "lvgl_ui.h"
-
+#include "esp_log.h"
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
@@ -31,7 +31,7 @@ typedef struct
 } my_timer_context_t;
 /* VARIABLES -----------------------------------------------------------------*/
 static my_timer_context_t my_tim_ctx;
-
+static const char *TAG = "display";
 static lv_color_t arc_color[] =
 {
    LV_COLOR_MAKE(0x00, 0x00, 0x00),
@@ -145,21 +145,41 @@ static void lvgl_ui_anim_timer_cb(lv_timer_t *timer)
             lv_obj_del(arc[i]);
         }
     }
-
+    char sd_path[64];
+    char file_path[64];
     // small logo close animation
     if ((count >= 100) && (count <= 200))
     {
     	lv_img_set_angle(img_logo, count - 100);
     }
     // large logo open animation
+
+     snprintf(sd_path, sizeof(sd_path), "/sd/Line.png");
+      FILE *f = fopen(sd_path, "rb");
+      if (f) {
+          fclose(f);
+          ESP_LOGE(TAG, "!!!!");
+          LV_LOG_INFO("!!!!!!!!!!!!");
+          //snprintf(file_path, sizeof(file_path), "S:/Line.png");
+          snprintf(file_path, sizeof(file_path), "S:Line.png");
+          //lv_image_set_scale(ui_img_profile, 256);
+
+          //lv_obj_remove_flag(ui_img_profile, LV_OBJ_FLAG_HIDDEN);
+          //lv_obj_add_flag(ui_no_photo_placeholder, LV_OBJ_FLAG_HIDDEN);
+      } else {
+          ESP_LOGE(TAG, "No file");
+          LV_LOG_USER("Photo not found for");
+          //lv_obj_add_flag(ui_img_profile, LV_OBJ_FLAG_HIDDEN);
+          //lv_obj_remove_flag(ui_no_photo_placeholder, LV_OBJ_FLAG_HIDDEN);
+      }
+
     if ((count >= 200) && (count <= 300))
     {
-		
-		LV_IMG_DECLARE(mountain);
-		lv_obj_t * backgroung = lv_img_create(lv_scr_act());
-		lv_img_set_src(backgroung, "S:mountain.bin");
-		lv_obj_align(backgroung, LV_ALIGN_CENTER, 0, -20);
-		lv_obj_set_size(backgroung, 800, 520);
+    	uint8_t angle = 300 - count;
+
+          img_logo = lv_img_create(tv1);
+          lv_img_set_src(img_logo, file_path);
+    	lv_img_set_angle(img_logo, angle);
     }
 
     // Delete timer when all animation finished

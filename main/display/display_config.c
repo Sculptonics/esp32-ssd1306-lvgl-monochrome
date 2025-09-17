@@ -116,7 +116,10 @@ void display_init(void)
     ESP_LOGI(TAG, "Display LVGL Scroll Text");
     LV_LOG_USER("dfghdfhdgf");
     lvgl_ui_start(disp);
-lv_fs_fatfs_init();
+    lv_fs_fatfs_init();
+      lv_fs_file_t f;
+  lv_fs_res_t res = lv_fs_open(&f, "S:Line.png", LV_FS_MODE_RD);
+  printf("res: %d\n", res);
 }
 
 static bool notify_lvgl_flush_ready(esp_lcd_panel_io_handle_t panel_io, esp_lcd_panel_io_event_data_t *edata, void *user_ctx)
