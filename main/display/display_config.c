@@ -111,10 +111,12 @@ void display_init(void)
     esp_lcd_panel_io_register_event_callbacks(io_handle, &cbs, disp);
 
     /* Rotation of the screen */
-    lv_disp_set_rotation(disp, LV_DISP_ROT_NONE);
+    lv_disp_set_rotation(disp, LV_DISPLAY_ROTATION_0);
 
     ESP_LOGI(TAG, "Display LVGL Scroll Text");
+    LV_LOG_USER("dfghdfhdgf");
     lvgl_ui_start(disp);
+lv_fs_fatfs_init();
 }
 
 static bool notify_lvgl_flush_ready(esp_lcd_panel_io_handle_t panel_io, esp_lcd_panel_io_event_data_t *edata, void *user_ctx)

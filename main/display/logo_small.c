@@ -92,9 +92,8 @@ const LV_ATTRIBUTE_MEM_ALIGN uint8_t ui_img_ue_logo_png_data[] =
 
 const lv_img_dsc_t ui_img_ue_logo_png =
 {
-  .header.cf = LV_IMG_CF_INDEXED_1BIT,
-  .header.always_zero = 0,
-  .header.reserved = 0,
+  .header.cf = LV_COLOR_FORMAT_I1,
+  .header.reserved_2 = 0,
   .header.w = 128,
   .header.h = 64,
   .data_size = 1024,

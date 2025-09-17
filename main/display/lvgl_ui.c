@@ -19,6 +19,7 @@
 
 #include <math.h>
 #include <stdio.h>
+#include <string.h>
 LV_IMG_DECLARE(ui_img_ue_logo_png)
 LV_IMG_DECLARE(ui_img_ue_logo_png_large)
 LV_FONT_DECLARE(ui_font_SS52);
@@ -77,7 +78,7 @@ static void lvgl_ui_count_up_timer_cb(lv_timer_t *timer)
 {
 	static uint8_t firstPart, secondPart;
 
-	my_timer_context_t *timer_ctx = (my_timer_context_t *) timer->user_data;
+	my_timer_context_t *timer_ctx = (my_timer_context_t *) lv_timer_get_user_data(timer);
 
 	timer_ctx->count_val += 4;
 
@@ -102,7 +103,7 @@ static void lvgl_ui_resume_timer()
 }
 static void lvgl_ui_reset_timer()
 {
-	my_timer_context_t *timer_ctx = (my_timer_context_t *) lvgl_ui_timer->user_data;
+	my_timer_context_t *timer_ctx = (my_timer_context_t *) lv_timer_get_user_data(lvgl_ui_timer);
 
 	timer_ctx->count_val = 0;
 }
@@ -121,7 +122,7 @@ static void lvgl_ui_delete_timer()
 
 static void lvgl_ui_anim_timer_cb(lv_timer_t *timer)
 {
-    my_timer_context_t *timer_ctx = (my_timer_context_t *) timer->user_data;
+    my_timer_context_t *timer_ctx = (my_timer_context_t *) lv_timer_get_user_data(timer);
     int count = timer_ctx->count_val;
 
     // Play arc animation
@@ -153,10 +154,12 @@ static void lvgl_ui_anim_timer_cb(lv_timer_t *timer)
     // large logo open animation
     if ((count >= 200) && (count <= 300))
     {
-    	uint8_t angle = 300 - count;
-		img_logo = lv_img_create(tv1);
-		lv_img_set_src(img_logo, &ui_img_ue_logo_png_large);
-    	lv_img_set_angle(img_logo, angle);
+		
+		LV_IMG_DECLARE(mountain);
+		lv_obj_t * backgroung = lv_img_create(lv_scr_act());
+		lv_img_set_src(backgroung, "S:mountain.bin");
+		lv_obj_align(backgroung, LV_ALIGN_CENTER, 0, -20);
+		lv_obj_set_size(backgroung, 800, 520);
     }
 
     // Delete timer when all animation finished
@@ -302,7 +305,7 @@ void lvgl_ui_timer_function(lvgl_timer_status_t timer_state)
 
 bool lvgl_ui_pause_timer_check()
 {
-	return lvgl_ui_timer->paused;
+	return lv_timer_get_paused(lvgl_ui_timer);
 }
 bool lvgl_ui_running_timer_check(void)
 {
