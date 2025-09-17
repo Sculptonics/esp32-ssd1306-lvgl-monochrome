@@ -17,6 +17,7 @@
 /* INCLUDES ------------------------------------------------------------------*/
 #include "main.h"
 #include "display/display_config.h"
+#include "storage/sd_init.h"
 #include "hardware/button.h"
 #include "peripherals/gpio_config.h"
 #include "esp_interrupt.h"
@@ -39,6 +40,7 @@ static void main_left_button_callback(button_state_t button_callback_type);
 
 void app_main(void)
 {
+  init_sd_card();
 	display_init();
 
 	gpio_config_ext_interrupt(MAIN_LEFT_BUTTON,
