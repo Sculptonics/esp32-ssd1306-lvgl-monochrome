@@ -2,7 +2,7 @@ build/
 components/
 managed_components/
 
-sdkconfig
+
 sdkconfig.old
 sdkconfig.defaults
 
