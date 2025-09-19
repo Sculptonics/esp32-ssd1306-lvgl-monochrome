@@ -10,3 +10,5 @@ sdkconfig.old
 .lock
 main/.cproject
 main/.project
+
+dependencies.lock
